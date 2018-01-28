@@ -1,53 +1,66 @@
 package algorithm;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Finder {
-	private final List<Thing> _p;
+    private final List<Thing> things;
 
-	public Finder(List<Thing> p) {
-		_p = p;
-	}
+    public Finder(List<Thing> things) {
+        this.things = things;
+    }
 
-	public F Find(FT ft) {
-		List<F> tr = new ArrayList<F>();
+    public ThingBirthDateDifference find(FindMode findMode) {
+        if (findMode == FindMode.MINIMAL_DIFFERENCE) {
+            return getMinimalBirthDateDifferenceFromList(getAllThingBirthDateDifferences());
+        } else if (findMode == FindMode.MAXIMAL_DIFFERENCE) {
+            return getMaximalBirthDateDifferenceFromList(getAllThingBirthDateDifferences());
+        } else {
+            throw new RuntimeException("Find Mode Exception");
+        }
+    }
 
-		for (int i = 0; i < _p.size() - 1; i++) {
-			for (int j = i + 1; j < _p.size(); j++) {
-				F r = new F();
-				if (_p.get(i).birthDate.getTime() < _p.get(j).birthDate.getTime()) {
-					r.P1 = _p.get(i);
-					r.P2 = _p.get(j);
-				} else {
-					r.P1 = _p.get(j);
-					r.P2 = _p.get(i);
-				}
-				r.D = r.P2.birthDate.getTime() - r.P1.birthDate.getTime();
-				tr.add(r);
-			}
-		}
+    private ThingBirthDateDifference getMinimalBirthDateDifferenceFromList(List<ThingBirthDateDifference> differences) {
+        ThingBirthDateDifference answer = differences.size() < 1 ? new ThingBirthDateDifference() : differences.get(0);
+        for (ThingBirthDateDifference result : differences) {
+            if (result.difference < answer.difference) {
+                answer = result;
+            }
+        }
+        return answer;
+    }
 
-		if (tr.size() < 1) {
-			return new F();
-		}
+    private ThingBirthDateDifference getMaximalBirthDateDifferenceFromList(List<ThingBirthDateDifference> differences) {
+        ThingBirthDateDifference answer = differences.size() < 1 ? new ThingBirthDateDifference() : differences.get(0);
+        for (ThingBirthDateDifference result : differences) {
+            if (result.difference > answer.difference) {
+                answer = result;
+            }
+            return answer;
+        }
+        return answer;
+    }
 
-		F answer = tr.get(0);
-		for (F result : tr) {
-			switch (ft) {
-				case One :
-					if (result.D < answer.D) {
-						answer = result;
-					}
-					break;
+    private List<ThingBirthDateDifference> getAllThingBirthDateDifferences() {
+        List<ThingBirthDateDifference> differences = new ArrayList<ThingBirthDateDifference>();
+        for (int i = 0; i < things.size() - 1; i++) {
+            for (int j = i + 1; j < things.size(); j++) {
+                differences.add(getThingBirthDateDifference(things.get(i), things.get(j)));
+            }
+        }
+        return differences;
+    }
 
-				case Two :
-					if (result.D > answer.D) {
-						answer = result;
-					}
-					break;
-			}
-		}
-
-		return answer;
-	}
+    private ThingBirthDateDifference getThingBirthDateDifference(Thing thing1, Thing thing2) {
+        ThingBirthDateDifference difference = new ThingBirthDateDifference();
+        if (thing1.birthDate.getTime() < thing2.birthDate.getTime()) {
+            difference.earlyBirthDateThing = thing1;
+            difference.lateBirthDateThing = thing2;
+        } else {
+            difference.earlyBirthDateThing = thing2;
+            difference.lateBirthDateThing = thing1;
+        }
+        difference.difference = difference.lateBirthDateThing.birthDate.getTime() - difference.earlyBirthDateThing.birthDate.getTime();
+        return difference;
+    }
 }
