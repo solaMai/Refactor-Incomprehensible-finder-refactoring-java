@@ -1,6 +1,6 @@
 package algorithm;
-public class ThingBirthDateDifference {
+public class ThingDifference {
 	public Thing earlyBirthDateThing;
 	public Thing lateBirthDateThing;
-	public long difference;
+	public long birthDateDifference;
 }

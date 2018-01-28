@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import algorithm.FindMode;
-import algorithm.ThingBirthDateDifference;
+import algorithm.ThingDifference;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,7 +37,7 @@ public class FinderTests {
 		List<Thing> list = new ArrayList<Thing>();
 		Finder finder = new Finder(list);
 
-		ThingBirthDateDifference result = finder.find(FindMode.MINIMAL_DIFFERENCE);
+		ThingDifference result = finder.find(FindMode.MINIMAL_DIFFERENCE);
 		assertEquals(null, result.earlyBirthDateThing);
 
 		assertEquals(null, result.lateBirthDateThing);
@@ -50,7 +50,7 @@ public class FinderTests {
 
 		Finder finder = new Finder(list);
 
-		ThingBirthDateDifference result = finder.find(FindMode.MINIMAL_DIFFERENCE);
+		ThingDifference result = finder.find(FindMode.MINIMAL_DIFFERENCE);
 
 		assertEquals(null, result.earlyBirthDateThing);
 		assertEquals(null, result.lateBirthDateThing);
@@ -63,7 +63,7 @@ public class FinderTests {
 		list.add(greg);
 		Finder finder = new Finder(list);
 
-		ThingBirthDateDifference result = finder.find(FindMode.MINIMAL_DIFFERENCE);
+		ThingDifference result = finder.find(FindMode.MINIMAL_DIFFERENCE);
 
 		assertEquals(sue, result.earlyBirthDateThing);
 		assertEquals(greg, result.lateBirthDateThing);
@@ -77,7 +77,7 @@ public class FinderTests {
 
 		Finder finder = new Finder(list);
 
-		ThingBirthDateDifference result = finder.find(FindMode.MAXIMAL_DIFFERENCE);
+		ThingDifference result = finder.find(FindMode.MAXIMAL_DIFFERENCE);
 
 		assertEquals(greg, result.earlyBirthDateThing);
 		assertEquals(mike, result.lateBirthDateThing);
@@ -92,7 +92,7 @@ public class FinderTests {
 		list.add(greg);
 		Finder finder = new Finder(list);
 
-		ThingBirthDateDifference result = finder.find(FindMode.MAXIMAL_DIFFERENCE);
+		ThingDifference result = finder.find(FindMode.MAXIMAL_DIFFERENCE);
 
 		assertEquals(sue, result.earlyBirthDateThing);
 		assertEquals(sarah, result.lateBirthDateThing);
@@ -108,7 +108,7 @@ public class FinderTests {
 
 		Finder finder = new Finder(list);
 
-		ThingBirthDateDifference result = finder.find(FindMode.MINIMAL_DIFFERENCE);
+		ThingDifference result = finder.find(FindMode.MINIMAL_DIFFERENCE);
 
 		assertEquals(sue, result.earlyBirthDateThing);
 		assertEquals(greg, result.lateBirthDateThing);

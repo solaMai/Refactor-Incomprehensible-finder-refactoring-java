@@ -10,49 +10,48 @@ public class Finder {
         this.things = things;
     }
 
-    public ThingBirthDateDifference find(FindMode findMode) {
+    public ThingDifference find(FindMode findMode) {
         if (findMode == FindMode.MINIMAL_DIFFERENCE) {
-            return getMinimalBirthDateDifferenceFromList(getAllThingBirthDateDifferences());
+            return getMinimalThingDifferenceFromList(getAllThingDifferences());
         } else if (findMode == FindMode.MAXIMAL_DIFFERENCE) {
-            return getMaximalBirthDateDifferenceFromList(getAllThingBirthDateDifferences());
+            return getMaximalDifferenceFromList(getAllThingDifferences());
         } else {
             throw new RuntimeException("Find Mode Exception");
         }
     }
 
-    private ThingBirthDateDifference getMinimalBirthDateDifferenceFromList(List<ThingBirthDateDifference> differences) {
-        ThingBirthDateDifference answer = differences.size() < 1 ? new ThingBirthDateDifference() : differences.get(0);
-        for (ThingBirthDateDifference result : differences) {
-            if (result.difference < answer.difference) {
-                answer = result;
+    private ThingDifference getMinimalThingDifferenceFromList(List<ThingDifference> differences) {
+        ThingDifference result = differences.size() < 1 ? new ThingDifference() : differences.get(0);
+        for (ThingDifference difference : differences) {
+            if (difference.birthDateDifference < result.birthDateDifference) {
+                result = difference;
             }
         }
-        return answer;
+        return result;
     }
 
-    private ThingBirthDateDifference getMaximalBirthDateDifferenceFromList(List<ThingBirthDateDifference> differences) {
-        ThingBirthDateDifference answer = differences.size() < 1 ? new ThingBirthDateDifference() : differences.get(0);
-        for (ThingBirthDateDifference result : differences) {
-            if (result.difference > answer.difference) {
-                answer = result;
+    private ThingDifference getMaximalDifferenceFromList(List<ThingDifference> differences) {
+        ThingDifference result = differences.size() < 1 ? new ThingDifference() : differences.get(0);
+        for (ThingDifference difference : differences) {
+            if (difference.birthDateDifference > result.birthDateDifference) {
+                result = difference;
             }
-            return answer;
         }
-        return answer;
+        return result;
     }
 
-    private List<ThingBirthDateDifference> getAllThingBirthDateDifferences() {
-        List<ThingBirthDateDifference> differences = new ArrayList<ThingBirthDateDifference>();
+    private List<ThingDifference> getAllThingDifferences() {
+        List<ThingDifference> differences = new ArrayList<ThingDifference>();
         for (int i = 0; i < things.size() - 1; i++) {
             for (int j = i + 1; j < things.size(); j++) {
-                differences.add(getThingBirthDateDifference(things.get(i), things.get(j)));
+                differences.add(getThingDifference(things.get(i), things.get(j)));
             }
         }
         return differences;
     }
 
-    private ThingBirthDateDifference getThingBirthDateDifference(Thing thing1, Thing thing2) {
-        ThingBirthDateDifference difference = new ThingBirthDateDifference();
+    private ThingDifference getThingDifference(Thing thing1, Thing thing2) {
+        ThingDifference difference = new ThingDifference();
         if (thing1.birthDate.getTime() < thing2.birthDate.getTime()) {
             difference.earlyBirthDateThing = thing1;
             difference.lateBirthDateThing = thing2;
@@ -60,7 +59,7 @@ public class Finder {
             difference.earlyBirthDateThing = thing2;
             difference.lateBirthDateThing = thing1;
         }
-        difference.difference = difference.lateBirthDateThing.birthDate.getTime() - difference.earlyBirthDateThing.birthDate.getTime();
+        difference.birthDateDifference = difference.lateBirthDateThing.birthDate.getTime() - difference.earlyBirthDateThing.birthDate.getTime();
         return difference;
     }
 }
