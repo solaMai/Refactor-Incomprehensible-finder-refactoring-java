@@ -4,62 +4,62 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Finder {
-    private final List<Thing> things;
+    private final List<People> peopleList;
 
-    public Finder(List<Thing> things) {
-        this.things = things;
+    public Finder(List<People> peopleList) {
+        this.peopleList = peopleList;
     }
 
-    public ThingDifference find(FindMode findMode) {
-        if (findMode == FindMode.MINIMAL_DIFFERENCE) {
-            return getMinimalThingDifferenceFromList(getAllThingDifferences());
-        } else if (findMode == FindMode.MAXIMAL_DIFFERENCE) {
-            return getMaximalDifferenceFromList(getAllThingDifferences());
+    public AgeDifference find(FindMode findMode) {
+        if (findMode == FindMode.CLOSEST) {
+            return getMinimalAgeDifferenceFromList(getAllAgeDifference());
+        } else if (findMode == FindMode.FURTHEST) {
+            return getMaximalAgeDifferenceFromList(getAllAgeDifference());
         } else {
             throw new RuntimeException("Find Mode Exception");
         }
     }
 
-    private ThingDifference getMinimalThingDifferenceFromList(List<ThingDifference> differences) {
-        ThingDifference result = differences.size() < 1 ? new ThingDifference() : differences.get(0);
-        for (ThingDifference difference : differences) {
-            if (difference.birthDateDifference < result.birthDateDifference) {
+    private AgeDifference getMinimalAgeDifferenceFromList(List<AgeDifference> differences) {
+        AgeDifference result = differences.size() < 1 ? new AgeDifference() : differences.get(0);
+        for (AgeDifference difference : differences) {
+            if (difference.difference < result.difference) {
                 result = difference;
             }
         }
         return result;
     }
 
-    private ThingDifference getMaximalDifferenceFromList(List<ThingDifference> differences) {
-        ThingDifference result = differences.size() < 1 ? new ThingDifference() : differences.get(0);
-        for (ThingDifference difference : differences) {
-            if (difference.birthDateDifference > result.birthDateDifference) {
+    private AgeDifference getMaximalAgeDifferenceFromList(List<AgeDifference> differences) {
+        AgeDifference result = differences.size() < 1 ? new AgeDifference() : differences.get(0);
+        for (AgeDifference difference : differences) {
+            if (difference.difference > result.difference) {
                 result = difference;
             }
         }
         return result;
     }
 
-    private List<ThingDifference> getAllThingDifferences() {
-        List<ThingDifference> differences = new ArrayList<ThingDifference>();
-        for (int i = 0; i < things.size() - 1; i++) {
-            for (int j = i + 1; j < things.size(); j++) {
-                differences.add(getThingDifference(things.get(i), things.get(j)));
+    private List<AgeDifference> getAllAgeDifference() {
+        List<AgeDifference> differences = new ArrayList<AgeDifference>();
+        for (int i = 0; i < peopleList.size() - 1; i++) {
+            for (int j = i + 1; j < peopleList.size(); j++) {
+                differences.add(getAgeDifference(peopleList.get(i), peopleList.get(j)));
             }
         }
         return differences;
     }
 
-    private ThingDifference getThingDifference(Thing thing1, Thing thing2) {
-        ThingDifference difference = new ThingDifference();
-        if (thing1.birthDate.getTime() < thing2.birthDate.getTime()) {
-            difference.earlyBirthDateThing = thing1;
-            difference.lateBirthDateThing = thing2;
+    private AgeDifference getAgeDifference(People people1, People people2) {
+        AgeDifference difference = new AgeDifference();
+        if (people1.birthDate.getTime() < people2.birthDate.getTime()) {
+            difference.youngPeople = people1;
+            difference.oldPeople = people2;
         } else {
-            difference.earlyBirthDateThing = thing2;
-            difference.lateBirthDateThing = thing1;
+            difference.youngPeople = people2;
+            difference.oldPeople = people1;
         }
-        difference.birthDateDifference = difference.lateBirthDateThing.birthDate.getTime() - difference.earlyBirthDateThing.birthDate.getTime();
+        difference.difference = difference.oldPeople.birthDate.getTime() - difference.youngPeople.birthDate.getTime();
         return difference;
     }
 }

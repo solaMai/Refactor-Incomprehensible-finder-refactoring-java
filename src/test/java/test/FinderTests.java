@@ -6,19 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 import algorithm.FindMode;
-import algorithm.ThingDifference;
+import algorithm.AgeDifference;
 import org.junit.Before;
 import org.junit.Test;
 
 import algorithm.Finder;
-import algorithm.Thing;
+import algorithm.People;
 
 public class FinderTests {
 
-	Thing sue = new Thing();
-	Thing greg = new Thing();
-	Thing sarah = new Thing();
-	Thing mike = new Thing();
+	People sue = new People();
+	People greg = new People();
+	People sarah = new People();
+	People mike = new People();
 
 	@Before
 	public void setup() {
@@ -34,73 +34,73 @@ public class FinderTests {
 
 	@Test
 	public void Returns_Empty_Results_When_Given_Empty_List() {
-		List<Thing> list = new ArrayList<Thing>();
+		List<People> list = new ArrayList<People>();
 		Finder finder = new Finder(list);
 
-		ThingDifference result = finder.find(FindMode.MINIMAL_DIFFERENCE);
-		assertEquals(null, result.earlyBirthDateThing);
+		AgeDifference result = finder.find(FindMode.CLOSEST);
+		assertEquals(null, result.youngPeople);
 
-		assertEquals(null, result.lateBirthDateThing);
+		assertEquals(null, result.oldPeople);
 	}
 
 	@Test
 	public void Returns_Empty_Results_When_Given_One_Person() {
-		List<Thing> list = new ArrayList<Thing>();
+		List<People> list = new ArrayList<People>();
 		list.add(sue);
 
 		Finder finder = new Finder(list);
 
-		ThingDifference result = finder.find(FindMode.MINIMAL_DIFFERENCE);
+		AgeDifference result = finder.find(FindMode.CLOSEST);
 
-		assertEquals(null, result.earlyBirthDateThing);
-		assertEquals(null, result.lateBirthDateThing);
+		assertEquals(null, result.youngPeople);
+		assertEquals(null, result.oldPeople);
 	}
 
 	@Test
 	public void Returns_Closest_Two_For_Two_People() {
-		List<Thing> list = new ArrayList<Thing>();
+		List<People> list = new ArrayList<People>();
 		list.add(sue);
 		list.add(greg);
 		Finder finder = new Finder(list);
 
-		ThingDifference result = finder.find(FindMode.MINIMAL_DIFFERENCE);
+		AgeDifference result = finder.find(FindMode.CLOSEST);
 
-		assertEquals(sue, result.earlyBirthDateThing);
-		assertEquals(greg, result.lateBirthDateThing);
+		assertEquals(sue, result.youngPeople);
+		assertEquals(greg, result.oldPeople);
 	}
 
 	@Test
 	public void Returns_Furthest_Two_For_Two_People() {
-		List<Thing> list = new ArrayList<Thing>();
+		List<People> list = new ArrayList<People>();
 		list.add(mike);
 		list.add(greg);
 
 		Finder finder = new Finder(list);
 
-		ThingDifference result = finder.find(FindMode.MAXIMAL_DIFFERENCE);
+		AgeDifference result = finder.find(FindMode.FURTHEST);
 
-		assertEquals(greg, result.earlyBirthDateThing);
-		assertEquals(mike, result.lateBirthDateThing);
+		assertEquals(greg, result.youngPeople);
+		assertEquals(mike, result.oldPeople);
 	}
 
 	@Test
 	public void Returns_Furthest_Two_For_Four_People() {
-		List<Thing> list = new ArrayList<Thing>();
+		List<People> list = new ArrayList<People>();
 		list.add(sue);
 		list.add(sarah);
 		list.add(mike);
 		list.add(greg);
 		Finder finder = new Finder(list);
 
-		ThingDifference result = finder.find(FindMode.MAXIMAL_DIFFERENCE);
+		AgeDifference result = finder.find(FindMode.FURTHEST);
 
-		assertEquals(sue, result.earlyBirthDateThing);
-		assertEquals(sarah, result.lateBirthDateThing);
+		assertEquals(sue, result.youngPeople);
+		assertEquals(sarah, result.oldPeople);
 	}
 
 	@Test
 	public void Returns_Closest_Two_For_Four_People() {
-		List<Thing> list = new ArrayList<Thing>();
+		List<People> list = new ArrayList<People>();
 		list.add(sue);
 		list.add(sarah);
 		list.add(mike);
@@ -108,10 +108,10 @@ public class FinderTests {
 
 		Finder finder = new Finder(list);
 
-		ThingDifference result = finder.find(FindMode.MINIMAL_DIFFERENCE);
+		AgeDifference result = finder.find(FindMode.CLOSEST);
 
-		assertEquals(sue, result.earlyBirthDateThing);
-		assertEquals(greg, result.lateBirthDateThing);
+		assertEquals(sue, result.youngPeople);
+		assertEquals(greg, result.oldPeople);
 	}
 
 }
